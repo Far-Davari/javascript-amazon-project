@@ -61,10 +61,10 @@ const addedMessageTimeouts = {};
 document.querySelectorAll(".js-add-to-cart-button")
   .forEach(button => {
     button.addEventListener("click", () => {
-      const productId =  button.dataset.productId;
+      const { productId } =  button.dataset;
       const count = document.querySelector(`.js-quantity-selector-${productId}`);
       const countValue = count.value;
-      const countValueToNumber = Number(countValue);
+      const quantity = Number(countValue);
       const addedToCartMessage = document.querySelector(`.js-added-to-cart-${productId}`);
 
       let matchingItem;
@@ -76,11 +76,11 @@ document.querySelectorAll(".js-add-to-cart-button")
       });
 
       if (matchingItem) {
-        matchingItem.quantity += countValueToNumber;
+        matchingItem.quantity += quantity;
       } else {
         cart.push({
-          productId: productId,
-          quantity: countValueToNumber
+          productId,
+          quantity
         });
       }
 
