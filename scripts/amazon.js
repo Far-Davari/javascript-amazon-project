@@ -56,6 +56,8 @@ products.forEach(product => {
 
 document.querySelector(".js-products-grid").innerHTML = html;
 
+const addedMessageTimeouts = {};
+
 document.querySelectorAll(".js-add-to-cart-button")
   .forEach(button => {
     button.addEventListener("click", () => {
@@ -63,6 +65,7 @@ document.querySelectorAll(".js-add-to-cart-button")
       const count = document.querySelector(`.js-quantity-selector-${productId}`);
       const countValue = count.value;
       const countValueToNumber = Number(countValue);
+      const addedToCartMessage = document.querySelector(`.js-added-to-cart-${productId}`);
 
       let matchingItem;
 
@@ -89,9 +92,19 @@ document.querySelectorAll(".js-add-to-cart-button")
 
       document.querySelector(".js-cart-quantity")
         .innerHTML = cartQuantity;
+        
+      addedToCartMessage.classList.add("added-to-cart-visibility");
 
-      document.querySelector(`.js-added-to-cart-${productId}`)
-        .classList.add("added-to-cart-visibility");
+      const previousTimeoutId = addedMessageTimeouts[productId];
+      if (previousTimeoutId) {
+        clearTimeout(previousTimeoutId);
+      }
+
+      const timeoutId = setTimeout(() => {
+          addedToCartMessage.classList.remove("added-to-cart-visibility");
+      }, 2000);
+
+      addedMessageTimeouts[productId] = timeoutId;
     });
 });
 
